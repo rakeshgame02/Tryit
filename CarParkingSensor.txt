@@ -1,0 +1,88 @@
+
+#include <Servo.h> 
+
+#Green -VCC 
+#trgger -yellow
+#Echo -- Orange 
+#GND- Red
+
+
+
+const int trig = 11;
+const int echo = 12;
+
+const int LED1_PORT = 2;
+const int LED2_PORT = 3;
+const int LED3_PORT = 4;
+const int LED4_PORT = 5;
+
+
+
+int duration = 0;
+int distance = 0;
+
+void setup()
+{
+  pinMode(trig , OUTPUT);
+  pinMode(echo , INPUT);
+ 
+  pinMode(LED1_PORT , OUTPUT);
+  pinMode(LED2_PORT , OUTPUT);
+  pinMode(LED3_PORT , OUTPUT);
+  pinMode(LED4_PORT , OUTPUT);
+
+
+ 
+  Serial.begin(9600);
+
+}
+
+void loop()
+{
+  
+  digitalWrite(trig , HIGH);
+  delayMicroseconds(1000);
+  digitalWrite(trig , LOW);
+
+
+  duration = pulseIn(echo , HIGH);
+  distance = (duration/2) / 28.5 ;
+  
+  Serial.println(distance);
+ 
+
+  if ( distance <= 5 )
+  {
+    digitalWrite(LED1_PORT, HIGH);
+  }
+  else
+  {
+    digitalWrite(LED1_PORT, LOW);
+  }
+  if ( distance <= 10 )
+  {
+    digitalWrite(LED2_PORT, HIGH);
+  }
+  else
+  {
+    digitalWrite(LED2_PORT, LOW);
+  }
+  if ( distance <= 15 )
+  {
+    digitalWrite(LED3_PORT, HIGH);
+  }
+  else
+  {
+    digitalWrite(LED3_PORT, LOW);
+  }
+  if ( distance <= 20 )
+  {
+    digitalWrite(LED4_PORT, HIGH);
+  }
+  else
+  {
+    digitalWrite(LED4_PORT, LOW);
+  }
+
+ 
+}
