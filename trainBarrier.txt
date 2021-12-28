@@ -1,0 +1,67 @@
+
+#include<Servo.h>
+#include <EEPROM.h>
+Servo myservo;
+
+
+const int trigPin = 10;
+const int echoPin = 11;
+long tmeduration;
+int distance;
+
+
+
+
+void setup() {
+  myservo.attach(9);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  Serial.begin(9600);
+
+}
+
+void loop() {
+
+
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  tmeduration = pulseIn(echoPin, HIGH);
+  distance = (0.034 * tmeduration) / 2;
+
+  if (distance <= 20) {
+    int value1 = EEPROM.read(111);
+    Serial.println("value1");
+    Serial.println(value1);
+
+
+    int angle = value1;
+
+    while (angle != 170) {
+      myservo.write (angle);
+      angle = angle + 10;
+      Serial.println("angle");
+      Serial.println(angle);
+      delay (150);
+    }
+    
+    
+    if(EEPROM.read(111) < 170){
+      Serial.println("Save done");
+      EEPROM.write(111, angle);
+      delay (5000);
+    }
+    
+  }
+  else {
+    myservo.write(70);
+    EEPROM.write(111, 70);
+  }
+
+  delay(1);
+
+
+}
